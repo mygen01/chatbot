@@ -19,7 +19,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Set up Google Gemini-Pro AI model
 gen_ai.configure(api_key=GOOGLE_API_KEY)
-model = gen_ai.GenerativeModel('gemini-2.0')
+model = gen_ai.GenerativeModel('gemini-pro')
 
 
 # Function to translate roles between Gemini-Pro and Streamlit terminology
@@ -50,15 +50,7 @@ if user_prompt:
     st.chat_message("user").markdown(user_prompt)
 
     # Send user's message to Gemini-Pro and get the response
- 
-
     gemini_response = st.session_state.chat_session.send_message(user_prompt)
-except Exception as e:
-    st.error(f"⚠️ Error sending message to Gemini-Pro: {e}")
-    gemini_response = None  # Prevents further issues if an error occurs
-
-
-
 
     # Display Gemini-Pro's response
     with st.chat_message("assistant"):

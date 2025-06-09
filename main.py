@@ -12,45 +12,38 @@ if not GOOGLE_API_KEY:
     st.stop()
 
 # Configure Streamlit page settings
-st.set_page_config(
-    page_title="Chat with Gemini-Pro!",
-    page_icon="🧠",  # Favicon emoji
-    layout="centered",
-)
+st.set_page_config(page_title="Chat with Gemini-Pro!", page_icon="🤖", layout="centered")
 
 # Set up Google Gemini-Pro AI model
 gen_ai.configure(api_key=GOOGLE_API_KEY)
 model = gen_ai.GenerativeModel('gemini-2.0-flash-lite')
 
-# Function to translate roles between Gemini-Pro and Streamlit terminology
-def translate_role_for_streamlit(user_role):
-    return "assistant" if user_role == "model" else user_role
+# Function to send a message and handle errors
+def get_gemini_response(user_input):
+    try:
+        response = st.session_state.chat_session.send_message(user_input)
+        return response.text
+    except Exception as e:
+        st.error(f"⚠️ Error sending message: {e}")
+        return "Sorry, I couldn't process your request."
 
-# Initialize chat session in Streamlit if not already present
+# Initialize chat session in Streamlit if not present
 if "chat_session" not in st.session_state:
     st.session_state.chat_session = model.start_chat(history=[])
 
-# Display the chatbot's title on the page
+# Display chatbot title
 st.title("🤖 Kettavan - ChatBot")
 
-# Display chat history
+# Show chat history
 for message in st.session_state.chat_session.history:
-    with st.chat_message(translate_role_for_streamlit(message.role)):
+    with st.chat_message("assistant" if message.role == "model" else message.role):
         st.markdown(message.parts[0].text)
 
-# Input field for user's message
+# User input field
 user_prompt = st.chat_input("Ask Gemini-Pro...")
 if user_prompt:
-    # Add user's message to chat and display it
     st.chat_message("user").markdown(user_prompt)
+    gemini_response = get_gemini_response(user_prompt)
 
-    try:
-        # Send user's message to Gemini-Pro and get response
-        gemini_response = st.session_state.chat_session.send_message(user_prompt)
-
-        # Display Gemini-Pro's response
-        with st.chat_message("assistant"):
-            st.markdown(gemini_response.text)
-
-    except Exception as e:
-        st.error(f"⚠️ Error communicating with Gemini-Pro: {e}")
+    with st.chat_message("assistant"):
+        st.markdown(gemini_response)

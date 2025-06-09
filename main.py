@@ -51,7 +51,7 @@ if user_prompt:
 
     # Send user's message to Gemini-Pro and get the response
  
-   try:
+
     gemini_response = st.session_state.chat_session.send_message(user_prompt)
 except Exception as e:
     st.error(f"⚠️ Error sending message to Gemini-Pro: {e}")

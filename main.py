@@ -16,7 +16,7 @@ st.set_page_config(page_title="Chat with Gemini-Pro!", page_icon="🤖", layout=
 
 # Set up Google Gemini-Pro AI model
 gen_ai.configure(api_key=GOOGLE_API_KEY)
-model = gen_ai.GenerativeModel('gemini-2.0-flash-lite')
+model = gen_ai.GenerativeModel('gemini-2.0-flash')
 
 # Function to send a message and handle errors
 def get_gemini_response(user_input):

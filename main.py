@@ -50,7 +50,12 @@ if user_prompt:
     st.chat_message("user").markdown(user_prompt)
 
     # Send user's message to Gemini-Pro and get the response
+ 
     gemini_response = st.session_state.chat_session.send_message(user_prompt)
+
+    gemini_response = None  # Prevents further issues if an error occurs
+
+
 
     # Display Gemini-Pro's response
     with st.chat_message("assistant"):

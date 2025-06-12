@@ -40,7 +40,7 @@ for message in st.session_state.chat_session.history:
         st.markdown(message.parts[0].text)
 
 # User input field
-user_prompt = st.chat_input("Ask Gemini-Pro...")
+user_prompt = st.chat_input("Ask Kettavan...")
 if user_prompt:
     st.chat_message("user").markdown(user_prompt)
     gemini_response = get_gemini_response(user_prompt)
